@@ -1,0 +1,217 @@
+import fs from "fs";
+import path from "path";
+
+import { BlogPostMetadata, BlogBreadcrumb } from "./types";
+
+const categories = [
+  {
+    name: "Frontend",
+    slug: "frontend",
+  },
+  {
+    name: "React",
+    slug: "react",
+  },
+  {
+    name: "Backend",
+    slug: "backend",
+  },
+  {
+    name: "DevOps",
+    slug: "devops",
+  },
+  {
+    name: "Design",
+    slug: "design",
+  },
+  {
+    name: "Career",
+    slug: "career",
+  },
+  {
+    name: "Other",
+    slug: "other",
+  },
+];
+
+const authors = [
+  {
+    name: "Reza Baharvand",
+    image: "/reza-sm.jpg",
+    role: "Founder",
+  },
+  {
+    name: "Jane Doe",
+    image: "/images/jane-doe.jpg",
+    role: "Designer",
+  },
+  {
+    name: "James Doe",
+    image: "/images/james-doe.jpg",
+    role: "DevOps Engineer",
+  },
+  {
+    name: "Judy Doe",
+    image: "/images/judy-doe.jpg",
+    role: "Product Manager",
+  },
+];
+
+function parseFrontmatter(fileContent: string) {
+  let frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
+  let match = frontmatterRegex.exec(fileContent);
+  let frontMatterBlock = match![1];
+  let content = fileContent.replace(frontmatterRegex, "").trim();
+  let frontMatterLines = frontMatterBlock.trim().split("\n");
+  let metadata: Partial<BlogPostMetadata> = {};
+
+  frontMatterLines.forEach((line) => {
+    let [key, ...valueArr] = line.split(": ");
+    let value = valueArr.join(": ").trim();
+    value = value.replace(/^['"](.*)['"]$/, "$1"); // Remove quotes
+    if (key.trim() === "featured") {
+      metadata[key.trim() as keyof BlogPostMetadata] =
+        value.toLowerCase() === "true";
+    } else {
+      metadata[key.trim() as keyof BlogPostMetadata] = value;
+    }
+  });
+
+  return { metadata: metadata as BlogPostMetadata, content };
+}
+
+function getMDXFiles(dir) {
+  return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
+}
+
+function readMDXFile(filePath) {
+  let rawContent = fs.readFileSync(filePath, "utf-8");
+  return parseFrontmatter(rawContent);
+}
+
+function extractTweetIds(content) {
+  let tweetMatches = content.match(/<StaticTweet\sid="[0-9]+"\s\/>/g);
+  return tweetMatches?.map((tweet) => tweet.match(/[0-9]+/g)[0]) || [];
+}
+
+function getMDXData(dir) {
+  let mdxFiles = getMDXFiles(dir);
+  return mdxFiles.map((file) => {
+    let { metadata, content } = readMDXFile(path.join(dir, file));
+    let slug = path.basename(file, path.extname(file));
+    let tweetIds = extractTweetIds(content);
+
+    if (metadata.category) {
+      const categoryMatch = categories.find(
+        (category) => category.name === metadata.category
+      );
+      metadata.categorySlug = categoryMatch ? categoryMatch.slug : "other";
+    } else {
+      // Set default category name and slug if no category is provided
+      metadata.category = "Other";
+      metadata.categorySlug = "other";
+    }
+
+    const authorMatch = authors.find(
+      (author) => author.name === metadata.author
+    );
+    if (authorMatch) {
+      metadata.authorImage = authorMatch.image;
+      metadata.authorRole = authorMatch.role;
+    } else {
+      // Use default author values if no match is found
+      metadata.author = "Reza Baharvand";
+      metadata.authorImage = "/reza-sm.jpg";
+      metadata.authorRole = "Founder";
+    }
+
+    const breadcrumbs: BlogBreadcrumb[] = [
+      {
+        name: "Blog",
+        href: "/blog",
+        current: false,
+      },
+      {
+        name: metadata.category || "Other",
+        href: `/blog/category/${metadata.categorySlug || "other"}`,
+        current: false,
+      },
+      {
+        name: metadata.title,
+        href: `/blog/${slug}`,
+        current: true,
+      },
+    ];
+
+    return {
+      metadata,
+      slug,
+      tweetIds,
+      content,
+      breadcrumbs,
+    };
+  });
+}
+
+export function getBlogPosts() {
+  return getMDXData(path.join(process.cwd(), "blog"));
+}
+
+export function getFeaturedBlogPosts(n: number) {
+  // First, get all blog posts
+  const allBlogPosts = getBlogPosts();
+
+  const featuredPosts = allBlogPosts
+    .filter((post) => post.metadata.featured) // Filter only featured posts
+    .sort(
+      (a, b) =>
+        new Date(b.metadata.updatedAt).getTime() -
+        new Date(a.metadata.updatedAt).getTime()
+    )
+    .slice(0, n);
+
+  return featuredPosts;
+}
+
+export function getAvailableCategories() {
+  const allBlogPosts = getBlogPosts();
+  const categorySet = new Set(); // Use a set to store unique category slugs
+
+  allBlogPosts.forEach((post) => {
+    const { category, categorySlug } = post.metadata;
+
+    if (category && categorySlug) {
+      categorySet.add(
+        JSON.stringify({
+          name: category,
+          slug: `/blog/category/${categorySlug}`,
+        })
+      ); // Stringify to allow objects in Set
+    }
+  });
+
+  // Convert the Set back to an array of objects
+  const uniqueCategories = Array.from(categorySet).map((item) =>
+    JSON.parse(item)
+  );
+
+  return uniqueCategories;
+}
+
+export function getPostsByCategorySlug(categorySlug: string) {
+  const allBlogPosts = getBlogPosts();
+
+  // Filter posts by the given category slug
+  const filteredPosts = allBlogPosts.filter(
+    (post) => post.metadata.categorySlug === categorySlug
+  );
+
+  // Map the filtered posts to the desired structure
+  const posts = filteredPosts.map((post) => ({
+    name: post.metadata.title,
+    slug: `/blog/${post.slug}`,
+    categoryName: post.metadata.category,
+  }));
+
+  return posts;
+}
