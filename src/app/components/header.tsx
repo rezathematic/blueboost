@@ -1,9 +1,11 @@
 "use client";
 
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
+import Button from "@/app/components/buttons";
 import {
   ChevronDownIcon,
   PhoneIcon,
+  CalendarDaysIcon,
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
 import {
@@ -14,6 +16,9 @@ import {
   FingerPrintIcon,
   SquaresPlusIcon,
   XMarkIcon,
+  PencilSquareIcon,
+  RocketLaunchIcon,
+  CodeBracketIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
@@ -22,42 +27,46 @@ import { Fragment, useState } from "react";
 
 const products = [
   {
-    name: "Analytics",
-    description: "Get a better understanding of your traffic",
-    href: "#",
-    icon: ChartPieIcon,
+    name: "SEO Services",
+    description: "Improve your SEO strategy to see returns",
+    href: "/services/seo",
+    icon: RocketLaunchIcon,
   },
   {
-    name: "Engagement",
-    description: "Speak directly to your customers",
-    href: "#",
-    icon: CursorArrowRaysIcon,
+    name: "Content Services",
+    description: "Craft content to rank",
+    href: "/services/seo-content",
+    icon: PencilSquareIcon,
   },
-  {
-    name: "Security",
-    description: "Your customers’ data will be safe and secure",
-    href: "#",
-    icon: FingerPrintIcon,
-  },
-  {
-    name: "Integrations",
-    description: "Connect with third-party tools",
-    href: "#",
-    icon: SquaresPlusIcon,
-  },
-  {
-    name: "Automations",
-    description: "Build strategic funnels that will convert",
-    href: "#",
-    icon: ArrowPathIcon,
-  },
+  // {
+  //   name: "Web Development",
+  //   description: "Build and scale youridea",
+  //   href: "/services/web-development",
+  //   icon: CodeBracketIcon,
+  // },
+  // {
+  //   name: "Integrations",
+  //   description: "Connect with third-party tools",
+  //   href: "#",
+  //   icon: SquaresPlusIcon,
+  // },
+  // {
+  //   name: "Automations",
+  //   description: "Build strategic funnels that will convert",
+  //   href: "#",
+  //   icon: ArrowPathIcon,
+  // },
 ];
 const callsToAction = [
-  { name: "Watch demo", href: "#", icon: PlayCircleIcon },
-  { name: "Contact sales", href: "#", icon: PhoneIcon },
+  {
+    name: "Get a quote",
+    href: "https://calendly.com/rezabb/seofix",
+    icon: CalendarDaysIcon,
+  },
+  { name: "Contact sales", href: "/contact", icon: PhoneIcon },
 ];
 
-export default function Example() {
+export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -94,7 +103,7 @@ export default function Example() {
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
             <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-              Product
+              Services
               <ChevronDownIcon
                 className="h-5 w-5 flex-none text-gray-400"
                 aria-hidden="true"
@@ -127,6 +136,7 @@ export default function Example() {
                         <Link
                           href={item.href}
                           className="block font-semibold text-gray-900"
+                          replace
                         >
                           {item.name}
                           <span className="absolute inset-0" />
@@ -156,31 +166,40 @@ export default function Example() {
           </Popover>
 
           <Link
-            href="#"
+            href="/method"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Features
+            Method
           </Link>
           <Link
-            href="#"
+            href="/about"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Marketplace
+            About
           </Link>
           <Link
-            href="#"
+            href="/blog"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Company
+            Blog
+          </Link>
+          <Link
+            href="/contact"
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
+            Contact
           </Link>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link
+          <Button href="https://calendly.com/rezabb/seofix">
+            Free SEO Strategy
+          </Button>
+          {/* <Link
             href="#"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
             Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
+          </Link> */}
         </div>
       </nav>
       <Dialog
@@ -221,7 +240,7 @@ export default function Example() {
                   {({ open }) => (
                     <>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Product
+                        Services
                         <ChevronDownIcon
                           className={clsx(
                             open ? "rotate-180" : "",
@@ -246,31 +265,40 @@ export default function Example() {
                   )}
                 </Disclosure>
                 <Link
-                  href="#"
+                  href="/method"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Features
+                  Method
                 </Link>
                 <Link
-                  href="#"
+                  href="/about"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Marketplace
+                  About
                 </Link>
                 <Link
-                  href="#"
+                  href="/blog"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Company
+                  Blog
+                </Link>
+                <Link
+                  href="/contact"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  Contact
                 </Link>
               </div>
               <div className="py-6">
-                <Link
+                {/* <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Log in
-                </Link>
+                </Link> */}
+                <Button href="https://calendly.com/rezabb/seofix">
+                  Free SEO Strategy
+                </Button>
               </div>
             </div>
           </div>

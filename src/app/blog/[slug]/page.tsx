@@ -9,6 +9,10 @@ import Image from "next/image";
 
 export async function generateMetadata({
   params,
+}: {
+  params: {
+    slug: string;
+  };
 }): Promise<Metadata | undefined> {
   let post = getBlogPosts().find((post) => post.slug === params.slug);
   if (!post) {
@@ -22,8 +26,8 @@ export async function generateMetadata({
     image,
   } = post.metadata;
   let ogImage = image
-    ? `https://leerob.io${image}`
-    : `https://leerob.io/og?title=${title}`;
+    ? `https://blueboost.co${image}`
+    : `https://blueboost.co/og?title=${title}`;
 
   return {
     title,
@@ -33,7 +37,7 @@ export async function generateMetadata({
       description,
       type: "article",
       modifiedTime,
-      url: `https://leerob.io/blog/${post.slug}`,
+      url: `https://blueboost.co/blog/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -49,7 +53,13 @@ export async function generateMetadata({
   };
 }
 
-export default function Blog({ params }) {
+export default function Blog({
+  params,
+}: {
+  params: {
+    slug: string;
+  };
+}) {
   let post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) {
@@ -73,9 +83,9 @@ export default function Blog({ params }) {
                 dateModified: post.metadata.updatedAt,
                 description: post.metadata.summary,
                 image: post.metadata.image
-                  ? `https://leerob.io${post.metadata.image}`
-                  : `https://leerob.io/og?title=${post.metadata.title}`,
-                url: `https://leerob.io/blog/${post.slug}`,
+                  ? `https://blueboost.co${post.metadata.image}`
+                  : `https://blueboost.co/og?title=${post.metadata.title}`,
+                url: `https://blueboost.co/blog/${post.slug}`,
                 author: {
                   "@type": "Person",
                   name: "Lee Robinson",

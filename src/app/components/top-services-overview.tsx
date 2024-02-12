@@ -28,7 +28,7 @@ const TopServicesOverview: React.FC<ServicesOverviewProps> = ({ services }) => {
             harness that power.
           </p>
           <div className="mt-10 flex items-center gap-x-6">
-            <Button href={"/"}>Explore our services</Button>
+            <Button href={"/services/seo"}>Explore our services</Button>
           </div>
         </article>
         <div className="mx-auto w-full max-w-2xl  pt-12 sm:pt-16 lg:mx-0 lg:max-w-none lg:border-t-0 lg:pt-0">

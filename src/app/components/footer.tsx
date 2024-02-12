@@ -17,7 +17,7 @@ interface NavLink {
 }
 
 interface FooterNav {
-  solutions: NavLink[];
+  services: NavLink[];
   support: NavLink[];
   company: NavLink[];
   legal: NavLink[];
@@ -25,24 +25,21 @@ interface FooterNav {
 }
 
 const footerNav: FooterNav = {
-  solutions: [
-    { name: "Marketing", href: "#" },
-    { name: "Analytics", href: "#" },
-    { name: "Commerce", href: "#" },
-    { name: "Insights", href: "#" },
-  ],
-  support: [
-    { name: "Pricing", href: "#" },
-    { name: "Documentation", href: "#" },
-    { name: "Guides", href: "#" },
-    { name: "API Status", href: "#" },
+  services: [
+    { name: "SEO", href: "/services/seo" },
+    { name: "Content", href: "/services/seo-content" },
   ],
   company: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Partners", href: "#" },
+    { name: "About", href: "/about" },
+    { name: "Method", href: "/method" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
+  ],
+  support: [
+    // { name: "Pricing", href: "#" },
+    // { name: "Documentation", href: "#" },
+    { name: "Guides", href: "/blog" },
+    // { name: "API Status", href: "#" },
   ],
   legal: [
     { name: "Privacy", href: "/legal/privacy-policy" },
@@ -125,10 +122,10 @@ const Footer = () => {
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 className="text-sm font-semibold leading-6 text-white">
-                  Solutions
+                  Services
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  {footerNav.solutions.map((item) => (
+                  {footerNav.services.map((item) => (
                     <li key={item.name}>
                       <Link
                         href={item.href}

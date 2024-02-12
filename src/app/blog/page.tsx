@@ -16,7 +16,7 @@ export default function Blog() {
   return (
     <>
       <Breadcrumbs links={links} />
-      <TopPostsGrid posts={allBlogPosts} />
+      <TopPostsGrid posts={allBlogPosts} isBlog />
       <StrategyCTA />
     </>
   );

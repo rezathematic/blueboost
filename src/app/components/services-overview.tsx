@@ -12,9 +12,9 @@ const ServicesOverview: React.FC<ServicesGridProps> = ({ services }) => {
     <section className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h3 className="mb-4 text-center text-sm inline-block bg-blue-300 px-4 align-middle leading-none rounded-full py-2 uppercase font-bold tracking-wider text-blue-800">
+          <p className="mb-4 text-center text-sm inline-block bg-blue-300 px-4 align-middle leading-none rounded-full py-2 uppercase font-bold tracking-wider text-blue-800">
             Built To Scale
-          </h3>
+          </p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Learn how our SEO agency can help you dominate your market.
           </h2>

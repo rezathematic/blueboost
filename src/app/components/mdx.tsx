@@ -6,7 +6,14 @@ import { highlight } from "sugar-high";
 import React from "react";
 import { LiveCode } from "./sandpack";
 
-function Table({ data }) {
+interface TableProps {
+  data: {
+    headers: string[];
+    rows: string[][];
+  };
+}
+
+function Table({ data }: TableProps) {
   let headers = data.headers.map((header, index) => (
     <th key={index}>{header}</th>
   ));
@@ -28,29 +35,57 @@ function Table({ data }) {
   );
 }
 
-function CustomLink(props) {
-  let href = props.href;
+interface CustomLinkProps {
+  href: string;
+  children: React.ReactNode;
+}
 
+function CustomLink({ href, children, ...rest }: CustomLinkProps) {
   if (href.startsWith("/")) {
+    // For internal links, use the Link component from Next.js or similar.
+    // Spread the rest of the props to Link, if Link supports them.
     return (
-      <Link href={href} {...props}>
-        {props.children}
+      <Link href={href} {...rest}>
+        {/* It's important to wrap children in an a tag for Next.js Link component. */}
+        <a>{children}</a>
       </Link>
     );
   }
 
   if (href.startsWith("#")) {
-    return <a {...props} />;
+    // For anchor links, use a simple a tag.
+    // Spread the rest of the props directly to the a tag.
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
   }
 
-  return <a target="_blank" rel="noopener noreferrer" {...props} />;
+  // For external links, add target and rel attributes for security.
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+      {children}
+    </a>
+  );
 }
 
-function RoundedImage(props) {
-  return <Image alt={props.alt} className="rounded-lg" {...props} />;
+interface ImageProps {
+  alt: string;
+  src: string;
 }
 
-function Callout(props) {
+// function RoundedImage(props) {
+function RoundedImage({ alt, src, ...rest }: ImageProps) {
+  return <Image alt={alt} src={src} className="rounded-lg" {...rest} />;
+}
+
+interface CalloutProps {
+  emoji: React.ReactNode;
+  children: React.ReactNode;
+}
+
+function Callout(props: CalloutProps) {
   return (
     <div className="px-4 py-3 border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 rounded p-1 text-sm flex items-center text-neutral-900 dark:text-neutral-100 mb-8">
       <div className="flex items-center w-4 mr-4">{props.emoji}</div>
@@ -59,7 +94,12 @@ function Callout(props) {
   );
 }
 
-function ProsCard({ title, pros }) {
+interface ProsCardProps {
+  title: string;
+  pros: string[];
+}
+
+function ProsCard({ title, pros }: ProsCardProps) {
   return (
     <div className="border border-emerald-200 dark:border-emerald-900 bg-neutral-50 dark:bg-neutral-900 rounded-xl p-6 my-4 w-full">
       <span>{`You might use ${title} if...`}</span>
@@ -88,7 +128,12 @@ function ProsCard({ title, pros }) {
   );
 }
 
-function ConsCard({ title, cons }) {
+interface ConsCardProps {
+  title: string;
+  cons: string[];
+}
+
+function ConsCard({ title, cons }: ConsCardProps) {
   return (
     <div className="border border-red-200 dark:border-red-900 bg-neutral-50 dark:bg-neutral-900 rounded-xl p-6 my-6 w-full">
       <span>{`You might not use ${title} if...`}</span>
@@ -113,12 +158,12 @@ function ConsCard({ title, cons }) {
   );
 }
 
-function Code({ children, ...props }) {
+function Code({ children, ...props }: { children: any }) {
   let codeHTML = highlight(children);
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
 }
 
-function slugify(str) {
+function slugify(str: string) {
   return str
     .toString()
     .toLowerCase()
@@ -130,7 +175,7 @@ function slugify(str) {
 }
 
 function createHeading(level: number) {
-  return function Heading({ children }: { children: React.ReactNode }) {
+  return function Heading({ children }: { children: any }) {
     let slug = slugify(children);
     return React.createElement(
       `h${level}`,
@@ -165,7 +210,7 @@ let components = {
   LiveCode,
 };
 
-export function CustomMDX(props) {
+export function CustomMDX(props: any) {
   return (
     <MDXRemote
       {...props}

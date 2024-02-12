@@ -5,6 +5,10 @@ import { BlogPostMetadata, BlogBreadcrumb } from "./types";
 
 const categories = [
   {
+    name: "Content",
+    slug: "content",
+  },
+  {
     name: "Frontend",
     slug: "frontend",
   },
@@ -63,7 +67,8 @@ function parseFrontmatter(fileContent: string) {
   let frontMatterBlock = match![1];
   let content = fileContent.replace(frontmatterRegex, "").trim();
   let frontMatterLines = frontMatterBlock.trim().split("\n");
-  let metadata: Partial<BlogPostMetadata> = {};
+  // let metadata: Partial<BlogPostMetadata> = {};
+  let metadata: Partial<Record<keyof BlogPostMetadata, string | boolean>> = {};
 
   frontMatterLines.forEach((line) => {
     let [key, ...valueArr] = line.split(": ");
@@ -80,21 +85,31 @@ function parseFrontmatter(fileContent: string) {
   return { metadata: metadata as BlogPostMetadata, content };
 }
 
-function getMDXFiles(dir) {
+function getMDXFiles(dir: string) {
   return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
 }
 
-function readMDXFile(filePath) {
+function readMDXFile(filePath: string) {
   let rawContent = fs.readFileSync(filePath, "utf-8");
   return parseFrontmatter(rawContent);
 }
 
-function extractTweetIds(content) {
-  let tweetMatches = content.match(/<StaticTweet\sid="[0-9]+"\s\/>/g);
-  return tweetMatches?.map((tweet) => tweet.match(/[0-9]+/g)[0]) || [];
+// function extractTweetIds(content: string): string[] {
+//   let tweetMatches = content.match(/<StaticTweet\sid="[0-9]+"\s\/>/g);
+//   return tweetMatches?.map((tweet) => tweet.match(/[0-9]+/g)[0]) || [];
+// }
+
+function extractTweetIds(content: string): string[] {
+  const tweetMatches = content.match(/<StaticTweet\sid="[0-9]+"\s\/>/g);
+  return (
+    tweetMatches?.map((tweet) => {
+      const idMatch = tweet.match(/[0-9]+/g);
+      return idMatch ? idMatch[0] : ""; // Ensure we always return a string, even if match is null
+    }) || []
+  );
 }
 
-function getMDXData(dir) {
+function getMDXData(dir: string) {
   let mdxFiles = getMDXFiles(dir);
   return mdxFiles.map((file) => {
     let { metadata, content } = readMDXFile(path.join(dir, file));
@@ -173,29 +188,53 @@ export function getFeaturedBlogPosts(n: number) {
   return featuredPosts;
 }
 
-export function getAvailableCategories() {
+// export function getAvailableCategories() {
+//   const allBlogPosts = getBlogPosts();
+//   const categorySet = new Set(); // Use a set to store unique category slugs
+
+//   allBlogPosts.forEach((post) => {
+//     const { category, categorySlug } = post.metadata;
+
+//     if (category && categorySlug) {
+//       categorySet.add(
+//         JSON.stringify({
+//           name: category,
+//           slug: `/blog/category/${categorySlug}`,
+//         })
+//       ); // Stringify to allow objects in Set
+//     }
+//   });
+
+//   // Convert the Set back to an array of objects
+//   const uniqueCategories = Array.from(categorySet).map((item) =>
+//     JSON.parse(item)
+//   );
+
+//   return uniqueCategories;
+// }
+
+type Category = {
+  name: string;
+  slug: string;
+};
+
+export function getAvailableCategories(): Category[] {
   const allBlogPosts = getBlogPosts();
-  const categorySet = new Set(); // Use a set to store unique category slugs
+  const categoriesMap = new Map<string, Category>(); // Use a Map to maintain unique categories
 
-  allBlogPosts.forEach((post) => {
-    const { category, categorySlug } = post.metadata;
+  allBlogPosts.forEach(({ metadata }) => {
+    const { category, categorySlug } = metadata;
 
-    if (category && categorySlug) {
-      categorySet.add(
-        JSON.stringify({
-          name: category,
-          slug: `/blog/category/${categorySlug}`,
-        })
-      ); // Stringify to allow objects in Set
+    if (category && categorySlug && !categoriesMap.has(categorySlug)) {
+      categoriesMap.set(categorySlug, {
+        name: category,
+        slug: `/blog/category/${categorySlug}`,
+      });
     }
   });
 
-  // Convert the Set back to an array of objects
-  const uniqueCategories = Array.from(categorySet).map((item) =>
-    JSON.parse(item)
-  );
-
-  return uniqueCategories;
+  // Convert the Map values to an array
+  return Array.from(categoriesMap.values());
 }
 
 export function getPostsByCategorySlug(categorySlug: string) {

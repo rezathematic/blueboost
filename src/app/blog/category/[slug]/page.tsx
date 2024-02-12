@@ -9,7 +9,13 @@ const links = [
   { href: "/blog/category", name: "Categories", current: false },
 ];
 
-const CategoryPage = ({ params }) => {
+const CategoryPage = ({
+  params,
+}: {
+  params: {
+    slug: string;
+  };
+}) => {
   let posts = getPostsByCategorySlug(params.slug);
 
   if (!posts || posts.length === 0) {

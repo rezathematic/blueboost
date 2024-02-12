@@ -1,35 +1,33 @@
-import Hero from "@/app/hero";
-import Method from "@/app/method";
-import LogoGrid from "@/app/components/logo-grid";
+import Hero from "@/app/method/hero";
 import TopServicesOverview from "@/app/components/top-services-overview";
 import AlgoCta from "@/app/components/algo-cta";
 import ServicesOverview from "@/app/components/services-overview";
 import StrategyCTA from "@/app/components/strategy-cta";
-import { TopPostsGrid } from "@/app/components/posts-grid";
+import StrategyFrameworkTimeline from "@/app/components/strategic-framework-timeline";
+import CtaPanel from "@/app/components/cta-panel";
+import AdditionalSEOServices from "@/app/components/additional-seo-services";
 
 // Lib imports
-import { logos } from "@/app/lib/logo";
-import { getFeaturedBlogPosts } from "@/app/lib/blog";
 import { topServices, servicesOverview } from "@/app/lib/services";
 
-export default function Home() {
-  let featuredPosts = getFeaturedBlogPosts(3);
-
+export default function MethodPage() {
   return (
     <>
       <Hero />
-      <LogoGrid logos={logos} />
-      <Method />
+      <hr className="border-gray-200" />
+      <StrategyFrameworkTimeline isWhite={true} />
+      <hr className="border-gray-200" />
+      <AdditionalSEOServices />
+      <CtaPanel ctaText="Get a custom quote" />
+      <hr className="border-gray-200" />
+      <AlgoCta />
       {/* TODO: Case Study Carousel: Image left, Two metrics, Title, Link */}
       <hr className="border-gray-200" />
       <TopServicesOverview services={topServices} />
-      <hr className="border-gray-200" />
-      <AlgoCta />
       {/* TODO: Testimonial videos carousel, message, name */}
       <hr className="border-gray-200" />
       <ServicesOverview services={servicesOverview} />
       <StrategyCTA />
-      <TopPostsGrid posts={featuredPosts} />
     </>
   );
 }

@@ -22,12 +22,17 @@ const StrategyCTA = () => {
                 run.
               </p>
               <div className="mt-10 flex items-center gap-x-6">
-                <Button href="#">Get your SEO strategy</Button>
+                <Button href="https://calendly.com/rezabb/seofix">
+                  Get your SEO strategy
+                </Button>
               </div>
             </div>
           </div>
           <div className="lg:order-first w-full">
-            <Link href="/" className="flex items-start justify-center">
+            <Link
+              href="https://calendly.com/rezabb/seofix"
+              className="flex items-start justify-center hover:scale-105 transition-all"
+            >
               <Image
                 src={seoPlaybook}
                 alt="The Ultimate SEO Secrets Playbook"
