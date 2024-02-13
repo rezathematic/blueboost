@@ -15,7 +15,7 @@
     "@next/third-parties": "latest",
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",
-    "next": "canary",
+    "next": "latest",
     "next-mdx-remote": "^4.4.1",
     "react": "^18",
     "react-dom": "^18",
