@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 export default function ContactPage() {
   return (
@@ -7,9 +7,9 @@ export default function ContactPage() {
         <div className="mx-auto max-w-2xl space-y-16 divide-y divide-gray-100 lg:mx-0 lg:max-w-none">
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900">
                 Contact Us
-              </h2>
+              </h1>
               <p className="mt-4 leading-7 text-gray-600">
                 Get in touch with us to learn more about our services.
               </p>
@@ -47,5 +47,5 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
