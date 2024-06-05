@@ -12,6 +12,7 @@ export type ServiceOverview = {
 
 export type BlogPostMetadata = {
   title: string;
+  slug?: string;
   createdAt: string;
   updatedAt: string;
   summary: string;
