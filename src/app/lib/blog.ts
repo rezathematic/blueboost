@@ -4,6 +4,7 @@ import path from 'path'
 import { BlogPostMetadata, BlogBreadcrumb } from './types'
 
 const categories = [
+  { name: 'Ecommerce SEO', slug: 'ecommerce-seo' },
   { name: 'Content Advice', slug: 'content-advice' },
   { name: 'Keyword Research', slug: 'keyword-research' },
   { name: 'Link Building', slug: 'link-building' },
