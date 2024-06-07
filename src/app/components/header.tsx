@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
-import Button from "@/app/components/buttons";
+import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
+import Button from '@/app/components/buttons'
 import {
   ChevronDownIcon,
   PhoneIcon,
   CalendarDaysIcon,
-  PlayCircleIcon,
-} from "@heroicons/react/20/solid";
+  PlayCircleIcon
+} from '@heroicons/react/20/solid'
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -19,25 +19,48 @@ import {
   PencilSquareIcon,
   RocketLaunchIcon,
   CodeBracketIcon,
-} from "@heroicons/react/24/outline";
-import clsx from "clsx";
-import Image from "next/image";
-import Link from "next/link";
-import { Fragment, useState } from "react";
+  ShoppingBagIcon,
+  SparklesIcon
+} from '@heroicons/react/24/outline'
+import clsx from 'clsx'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Fragment, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 const products = [
   {
-    name: "SEO Services",
-    description: "Improve your SEO strategy to see returns",
-    href: "/services/seo",
-    icon: RocketLaunchIcon,
+    name: 'SEO Services',
+    description: 'Improve your SEO strategy to see returns',
+    href: '/services/seo',
+    icon: RocketLaunchIcon
   },
   {
-    name: "Content Services",
-    description: "Craft content to rank",
-    href: "/services/seo-content",
-    icon: PencilSquareIcon,
+    name: 'Content & Performance Marketing Services',
+    description: 'Craft content to rank',
+    href: '/services/seo-content',
+    icon: PencilSquareIcon
   },
+  {
+    name: 'Ecommerce Strategy Services',
+    description:
+      'Develop comprehensive strategies for direct-to-consumer (D2C) success.',
+    href: 'https://calendly.com/rezabb/seofix',
+    icon: ShoppingBagIcon
+  },
+  {
+    name: 'Web Development Services',
+    description: 'Build and scale youridea',
+    href: 'https://calendly.com/rezabb/seofix',
+    icon: CodeBracketIcon
+  },
+  {
+    name: 'Branding & UI/UX Design',
+    description:
+      'Create impactful branding and user experiences to captivate your audience.',
+    href: 'https://calendly.com/rezabb/seofix',
+    icon: SparklesIcon
+  }
   // {
   //   name: "Web Development",
   //   description: "Build and scale youridea",
@@ -56,27 +79,29 @@ const products = [
   //   href: "#",
   //   icon: ArrowPathIcon,
   // },
-];
+]
 const callsToAction = [
   {
-    name: "Get a quote",
-    href: "https://calendly.com/rezabb/seofix",
-    icon: CalendarDaysIcon,
+    name: 'Get a quote',
+    href: 'https://calendly.com/rezabb/seofix',
+    icon: CalendarDaysIcon
   },
-  { name: "Contact sales", href: "/contact", icon: PhoneIcon },
-];
+  { name: 'Contact sales', href: '/contact', icon: PhoneIcon }
+]
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const pathname = usePathname()
 
   return (
     <header className="bg-white">
       <nav
-        className="mx-auto container flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="container mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="/" className="-m-1.5 p-1.5 flex items-center">
+          <Link href="/" className="-m-1.5 flex items-center p-1.5">
             <span className="sr-only">Blue Boost</span>
             <Image
               width={100}
@@ -100,7 +125,7 @@ export default function Header() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <Popover.Group className="hidden lg:flex lg:gap-x-12">
+        <Popover.Group className="hidden lg:flex lg:gap-x-12" key={pathname}>
           <Popover className="relative">
             <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
               Services
@@ -121,7 +146,7 @@ export default function Header() {
             >
               <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
-                  {products.map((item) => (
+                  {products.map(item => (
                     <div
                       key={item.name}
                       className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
@@ -147,7 +172,7 @@ export default function Header() {
                   ))}
                 </div>
                 <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                  {callsToAction.map((item) => (
+                  {callsToAction.map(item => (
                     <Link
                       key={item.name}
                       href={item.href}
@@ -211,7 +236,7 @@ export default function Header() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <Link href="/" className="-m-1.5 p-1.5 flex items-center">
+            <Link href="/" className="-m-1.5 flex items-center p-1.5">
               <span className="sr-only">Blue Boost</span>
               <Image
                 width={100}
@@ -243,14 +268,14 @@ export default function Header() {
                         Services
                         <ChevronDownIcon
                           className={clsx(
-                            open ? "rotate-180" : "",
-                            "h-5 w-5 flex-none"
+                            open ? 'rotate-180' : '',
+                            'h-5 w-5 flex-none'
                           )}
                           aria-hidden="true"
                         />
                       </Disclosure.Button>
                       <Disclosure.Panel className="mt-2 space-y-2">
-                        {[...products, ...callsToAction].map((item) => (
+                        {[...products, ...callsToAction].map(item => (
                           <Disclosure.Button
                             key={item.name}
                             as="a"
@@ -305,5 +330,5 @@ export default function Header() {
         </Dialog.Panel>
       </Dialog>
     </header>
-  );
+  )
 }

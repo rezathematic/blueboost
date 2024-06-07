@@ -1,28 +1,28 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Footer from "@/app/components/footer";
-import Header from "@/app/components/header";
-import NewsletterOptin from "@/app/components/newsletter-optin";
-import "./globals.css";
-import "./bg.css";
-import { SandpackCSS } from "./blog/[slug]/sandpack";
-import { GoogleTagManager } from "@next/third-parties/google";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import Footer from '@/app/components/footer'
+import Header from '@/app/components/header'
+import NewsletterOptin from '@/app/components/newsletter-optin'
+import './globals.css'
+import './bg.css'
+import { SandpackCSS } from './blog/[slug]/sandpack'
+import { GoogleTagManager } from '@next/third-parties/google'
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: "Blue Boost",
-    template: "%s | Blue Boost",
+    default: 'Blue Boost',
+    template: '%s | Blue Boost'
   },
   description:
-    "Looking for the top SEO agency? We can help improve your search engine optimization with our custom services. ✓ Get started!",
-};
+    'Looking for the top SEO agency? We can help improve your search engine optimization with our custom services. ✓ Get started!'
+}
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en">
@@ -34,5 +34,5 @@ export default function RootLayout({
         <GoogleTagManager gtmId="GTM-5C85CZ76" />
       </body>
     </html>
-  );
+  )
 }
