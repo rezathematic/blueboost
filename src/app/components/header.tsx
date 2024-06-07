@@ -236,7 +236,7 @@ export default function Header() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <Link href="/" className="-m-1.5 flex items-center p-1.5">
+            <a href="/" className="-m-1.5 flex items-center p-1.5">
               <span className="sr-only">Blue Boost</span>
               <Image
                 width={100}
@@ -248,7 +248,7 @@ export default function Header() {
               <span className="ml-1 font-semibold tracking-wide text-gray-900">
                 Blue Boost
               </span>
-            </Link>
+            </a>
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -289,30 +289,30 @@ export default function Header() {
                     </>
                   )}
                 </Disclosure>
-                <Link
+                <a
                   href="/method"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Method
-                </Link>
-                <Link
+                </a>
+                <a
                   href="/about"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   About
-                </Link>
-                <Link
+                </a>
+                <a
                   href="/blog"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Blog
-                </Link>
-                <Link
+                </a>
+                <a
                   href="/contact"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Contact
-                </Link>
+                </a>
               </div>
               <div className="py-6">
                 {/* <Link
