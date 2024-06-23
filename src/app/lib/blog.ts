@@ -12,6 +12,7 @@ const categories = [
   { name: 'Off-Page SEO', slug: 'off-page-seo' },
   { name: 'On-Page SEO', slug: 'on-page-seo' },
   { name: 'Technical SEO', slug: 'technical-seo' },
+  { name: 'WordPress', slug: 'wordpress' },
   { name: 'Other', slug: 'other' }
 ]
 
@@ -41,23 +42,54 @@ const authors = [
 function parseFrontmatter(fileContent: string) {
   let frontmatterRegex = /---\s*([\s\S]*?)\s*---/
   let match = frontmatterRegex.exec(fileContent)
-  let frontMatterBlock = match![1]
-  let content = fileContent.replace(frontmatterRegex, '').trim()
-  let frontMatterLines = frontMatterBlock.trim().split('\n')
-  // let metadata: Partial<BlogPostMetadata> = {};
-  let metadata: Partial<Record<keyof BlogPostMetadata, string | boolean>> = {}
+  if (!match) {
+    throw new Error('Invalid frontmatter format')
+  }
 
-  frontMatterLines.forEach(line => {
-    let [key, ...valueArr] = line.split(': ')
-    let value = valueArr.join(': ').trim()
-    value = value.replace(/^['"](.*)['"]$/, '$1') // Remove quotes
-    if (key.trim() === 'featured') {
-      metadata[key.trim() as keyof BlogPostMetadata] =
-        value.toLowerCase() === 'true'
-    } else {
-      metadata[key.trim() as keyof BlogPostMetadata] = value
+  let frontMatterBlock = match[1]
+  let content = fileContent.replace(frontmatterRegex, '').trim()
+
+  // Use a state machine to handle multiline values
+  let metadata: Partial<Record<keyof BlogPostMetadata, string | boolean>> = {}
+  let currentKey: string | null = null
+  let currentValue: string[] = []
+
+  frontMatterBlock.split('\n').forEach(line => {
+    let keyMatch = line.match(/^(\w+):\s*(.*)$/)
+
+    if (keyMatch) {
+      // Save the previous key-value pair if there was one
+      if (currentKey) {
+        let value = currentValue.join('\n').trim()
+        value = value.replace(/^['"](.*)['"]$/, '$1') // Remove quotes
+        if (currentKey === 'featured') {
+          metadata[currentKey as keyof BlogPostMetadata] =
+            value.toLowerCase() === 'true'
+        } else {
+          metadata[currentKey as keyof BlogPostMetadata] = value
+        }
+      }
+
+      // Start a new key-value pair
+      currentKey = keyMatch[1]
+      currentValue = [keyMatch[2]]
+    } else if (currentKey) {
+      // Continue a multiline value
+      currentValue.push(line)
     }
   })
+
+  // Save the last key-value pair
+  if (currentKey) {
+    let value = currentValue.join('\n').trim()
+    value = value.replace(/^['"](.*)['"]$/, '$1') // Remove quotes
+    if (currentKey === 'featured') {
+      metadata[currentKey as keyof BlogPostMetadata] =
+        value.toLowerCase() === 'true'
+    } else {
+      metadata[currentKey as keyof BlogPostMetadata] = value
+    }
+  }
 
   return { metadata: metadata as BlogPostMetadata, content }
 }
